@@ -289,6 +289,7 @@ class WebView extends StatefulWidget {
 
 class WebViewState extends State<WebView> with WebeViewTextInput {
   final GlobalKey _key = GlobalKey();
+  var _subpixelPan = Offset.zero;
   String _composingText = '';
   late final _focusNode = FocusNode();
   bool isPrimaryFocus = false;
@@ -435,14 +436,26 @@ class WebViewState extends State<WebView> with WebeViewTextInput {
             _controller._cursorDragging(ev.localPosition);
           },
           onPointerSignal: (signal) {
-            if (signal is PointerScrollEvent) {
-              _controller._setScrollDelta(signal.localPosition,
-                  signal.scrollDelta.dx.round(), signal.scrollDelta.dy.round());
+            if (signal is! PointerScrollEvent) {
+              return;
             }
+            final dpr = MediaQuery.of(context).devicePixelRatio;
+            final dx = (dpr * signal.scrollDelta.dx).round();
+            var dy = (-dpr * signal.scrollDelta.dy).round();
+            if(Platform.isMacOS) {
+              dy = -dy;
+            }
+            _controller._setScrollDelta(signal.localPosition, dx, dy);
           },
           onPointerPanZoomUpdate: (event) {
-            _controller._setScrollDelta(event.localPosition,
-                event.panDelta.dx.round(), event.panDelta.dy.round());
+            _subpixelPan += event.panDelta;
+            final dx = _subpixelPan.dx.round();
+            final dy = _subpixelPan.dy.round();
+            if (dx.abs() < 2 && dy.abs() < 2) {
+              return;
+            }
+            _controller._setScrollDelta(event.localPosition, dx, dy);
+            _subpixelPan -= Offset(dx.toDouble(), dy.toDouble());
           },
           child: MouseRegion(
             cursor: _mouseType,
