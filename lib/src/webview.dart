@@ -125,12 +125,12 @@ class WebViewController extends ValueNotifier<bool> {
     return _pluginChannel.invokeMethod('openDevTools');
   }
 
-  Future<void> setCookie(String domain, String key, String val) async {
+  Future<void> setCookie(String domain, String key, String val, {bool httpOnly = true, bool secure = true}) async {
     if (_isDisposed) {
       return;
     }
     assert(value);
-    return _pluginChannel.invokeMethod('setCookie', [domain, key, val]);
+    return _pluginChannel.invokeMethod('setCookie', [domain, key, val, httpOnly, secure]);
   }
 
   Future<void> deleteCookie(String domain, String key) async {

@@ -275,7 +275,9 @@ namespace webview_cef {
 			const auto domain = *std::get_if<std::string>(&(*list)[0]);
 			const auto key = *std::get_if<std::string>(&(*list)[1]);
 			const auto value = *std::get_if<std::string>(&(*list)[2]);
-			handler.get()->setCookie(domain, key, value);
+			const auto httponly = *std::get_if<bool>(&(*list)[3]);
+			const auto secure = *std::get_if<bool>(&(*list)[4]);
+			handler.get()->setCookie(domain, key, value, httponly, secure);
 			result->Success();
 		}
 		else if (method_call.method_name().compare("deleteCookie") == 0) {

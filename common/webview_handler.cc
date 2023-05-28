@@ -305,7 +305,7 @@ void WebviewHandler::openDevTools() {
     }
 }
 
-void WebviewHandler::setCookie(const std::string& domain, const std::string& key, const std::string& value){
+void WebviewHandler::setCookie(const std::string& domain, const std::string& key, const std::string& value, bool httponly, bool secure){
     CefRefPtr<CefCookieManager> manager = CefCookieManager::GetGlobalManager(nullptr);
     if(manager){
         CefCookie cookie;
@@ -317,8 +317,8 @@ void WebviewHandler::setCookie(const std::string& domain, const std::string& key
 			CefString(&cookie.domain).FromString(domain.c_str());
 		}
 
-		cookie.httponly = true;
-		cookie.secure = false;
+		cookie.httponly = httponly;
+		cookie.secure = secure;
 		std::string httpDomain = "https://" + domain + "/cookiestorage";
 		manager->SetCookie(httpDomain, cookie, nullptr);
     }

@@ -106,7 +106,7 @@ public:
     void reload();
     void openDevTools();
     
-    void setCookie(const std::string& domain, const std::string& key, const std::string& value);
+    void setCookie(const std::string& domain, const std::string& key, const std::string& value, bool httponly, bool secure);
     void deleteCookie(const std::string& domain, const std::string& key);
     bool visitAllCookies();
     bool visitUrlCookies(const std::string& domain, const bool& isHttpOnly);
