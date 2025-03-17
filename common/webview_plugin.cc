@@ -343,7 +343,9 @@ namespace webview_cef {
 			const auto domain = webview_value_get_string(webview_value_get_list_value(values, 0));
 			const auto key = webview_value_get_string(webview_value_get_list_value(values, 1));
 			const auto value = webview_value_get_string(webview_value_get_list_value(values, 2));
-			m_handler->setCookie(domain, key, value);
+			const auto httponly = webview_value_get_bool(webview_value_get_list_value(values, 3));
+			const auto secure = webview_value_get_bool(webview_value_get_list_value(values, 4));
+			m_handler->setCookie(domain, key, value, httponly, secure);
 			result(1, nullptr);
 		}
 		else if (name.compare("deleteCookie") == 0) {

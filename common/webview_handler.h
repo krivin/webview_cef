@@ -161,7 +161,7 @@ public:
     void imeCommitText(int browserId, std::string text);
     void setClientFocus(int browserId, bool focus);
 
-    void setCookie(const std::string& domain, const std::string& key, const std::string& value);
+    void setCookie(const std::string& domain, const std::string& key, const std::string& value, bool httponly, bool secure);
     void deleteCookie(const std::string& domain, const std::string& key);
     void visitAllCookies(std::function<void(std::map<std::string, std::map<std::string, std::string>>)> callback);
     void visitUrlCookies(const std::string& domain, const bool& isHttpOnly, std::function<void(std::map<std::string, std::map<std::string, std::string>>)> callback);
